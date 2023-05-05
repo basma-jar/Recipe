@@ -1,0 +1,41 @@
+details recette :
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    
+<h1>{{ recette.nom }}</h1>
+<p>{{ recette.description }}</p>
+<p>Temps de préparation: {{ recette.temps_preparation }} minutes</p>
+<p>Temps de cuisson: {{ recette.temps_cuisson }} minutes</p>
+<p>Nombre de personnes: {{ recette.personnes }}</p>
+
+<h2>Etapes de la recette:</h2>
+<ol>
+  {% for etape in etapes %}
+    <li>{{ etape.description }}</li>
+  {% empty %}
+    <li>Aucune étape trouvée.</li>
+  {% endfor %}
+</ol>
+
+<h2>Note moyenne:</h2>
+<p>{{ note_moyenne }} / 5</p>
+<form method="post" action="{% url 'ajouter_note' recette.pk %}">
+    {% csrf_token %}
+    {% include 'ajouter_note.html' %}
+  </form>
+  <form method="post" action="{% url 'ajouter_commentaire' recette.pk %}">
+      {% csrf_token %}
+      {% include 'ajouter_commentaire.html' %}
+  </form>
+<h2>Commentaires:</h2>
+{% for commentaire in commentaires %}
+  <div>
+    <p><strong>{{ commentaire.user }}</strong> a écrit le {{ commentaire.date|date:"d/m/Y H:i:s" }}</p>
+    <p>{{ commentaire.contenu }}</p>
+  </div>
+{% empty %}
+  <p>Aucun commentaire trouvé.</p>
+{% endfor %}
+
+{% endblock %}
