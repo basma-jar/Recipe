@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from commentaires.forms import CommentaireForm
 from django.contrib import messages
 
-@login_required(login_url='authentification:signUp')
+@login_required
 def ajouter_commentaire(request, pk):
     recette = get_object_or_404(Recette, pk=pk)
     if request.method == 'POST':
@@ -25,7 +25,7 @@ def ajouter_commentaire(request, pk):
         form = CommentaireForm()
     return render(request, 'ajouter_commentaire.html', {'form': form})
 
-@login_required(login_url='authentification:signUp')
+@login_required
 def ajouter_note(request, pk):
     recette = get_object_or_404(Recette, pk=pk)
     if request.method == 'POST':
